@@ -4,6 +4,7 @@ import { initialData } from "@/seed/seed";
 import { titleFont } from "@/config/fonts";
 import { SizeSelector } from "@/components/product/size-selector/SizeSelector";
 import { QuantitySelector } from "@/components/product/quantity-selector/QuantitySelector";
+import { Slideshow } from "@/components/product/slideshow/Slideshow";
 
 interface Props {
   params: {
@@ -20,7 +21,9 @@ export default async function ProductPage({ params }: Props) {
   return (
     <div className="mt-5 mb-20 grid md:grid-cols-3 gap-3">
       {/* SLIDESHOW */}
-      <div className="col-span-1 md:col-span-2">slideshow</div>
+      <div className="col-span-1 md:col-span-2">
+        <Slideshow images={product.images} title={product.title} />
+      </div>
 
       {/* DETAILS */}
       <div className="col-span-1 px-5">
