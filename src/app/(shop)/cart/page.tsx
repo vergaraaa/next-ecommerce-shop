@@ -16,7 +16,7 @@ export default function CartPage() {
       <div className="flex flex-col w-[1000px]">
         <Title title="Cart" />
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-10 items-start">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-10">
           {/* CART */}
           <div className="flex flex-col mt-5">
             <span className="text-xl">Add more items</span>
@@ -49,7 +49,7 @@ export default function CartPage() {
           </div>
 
           {/* CHECKOUT */}
-          <div className="bg-white rounded-xl shadow-xl p-7">
+          <div className="bg-white rounded-xl shadow-xl p-7 h-fit">
             <h2 className="text-2xl mb-2">Order summary</h2>
 
             <div className="grid grid-cols-2">
