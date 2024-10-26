@@ -8,9 +8,9 @@ import { Slideshow } from "@/components/product/slideshow/Slideshow";
 import { MobileSlideshow } from "@/components/product/slideshow/MobileSlideshow";
 
 interface Props {
-  params: {
+  params: Promise<{
     slug: string;
-  };
+  }>;
 }
 
 export default async function ProductPage({ params }: Props) {

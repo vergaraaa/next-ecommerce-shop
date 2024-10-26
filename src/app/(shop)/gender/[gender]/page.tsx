@@ -9,12 +9,12 @@ import { ProductGrid } from "@/components/products/product-grid/ProductGrid";
 import { getPaginatedProductsWithImages } from "@/actions/products/product-pagination";
 
 interface Props {
-  params: {
+  params: Promise<{
     gender: string;
-  };
-  searchParams: {
+  }>;
+  searchParams: Promise<{
     page?: string;
-  };
+  }>;
 }
 
 const labels: Record<string, string> = {
