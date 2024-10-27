@@ -1,11 +1,14 @@
+export const revalidate = 604800; // 7 days
+
 import { notFound } from "next/navigation";
 
-import { initialData } from "@/seed/seed";
 import { titleFont } from "@/config/fonts";
-import { SizeSelector } from "@/components/product/size-selector/SizeSelector";
-import { QuantitySelector } from "@/components/product/quantity-selector/QuantitySelector";
 import { Slideshow } from "@/components/product/slideshow/Slideshow";
+import { StockLabel } from "@/components/product/stock-label/StockLabel";
+import { getProductBySlug } from "@/actions/products/get-product-by-slug";
+import { SizeSelector } from "@/components/product/size-selector/SizeSelector";
 import { MobileSlideshow } from "@/components/product/slideshow/MobileSlideshow";
+import { QuantitySelector } from "@/components/product/quantity-selector/QuantitySelector";
 
 interface Props {
   params: Promise<{
@@ -15,7 +18,7 @@ interface Props {
 
 export default async function ProductPage({ params }: Props) {
   const { slug } = await params;
-  const product = initialData.products.find((product) => product.slug === slug);
+  const product = await getProductBySlug(slug);
 
   if (!product) return notFound();
 
@@ -24,7 +27,6 @@ export default async function ProductPage({ params }: Props) {
       {/* SLIDESHOW */}
       <div className="col-span-1 md:col-span-2">
         {/* MOBILE SLIDESHOW */}
-
         <MobileSlideshow
           images={product.images}
           title={product.title}
@@ -43,6 +45,8 @@ export default async function ProductPage({ params }: Props) {
 
       {/* DETAILS */}
       <div className="col-span-1 px-5">
+        <StockLabel slug={product.slug} />
+
         <h1 className={`${titleFont.className} antialiased font-bold text-xl`}>
           {product.title}
         </h1>
