@@ -9,11 +9,35 @@ import { getProductBySlug } from "@/actions/products/get-product-by-slug";
 import { SizeSelector } from "@/components/product/size-selector/SizeSelector";
 import { MobileSlideshow } from "@/components/product/slideshow/MobileSlideshow";
 import { QuantitySelector } from "@/components/product/quantity-selector/QuantitySelector";
+import { Metadata } from "next";
 
 interface Props {
   params: Promise<{
     slug: string;
   }>;
+}
+
+export async function generateMetadata({
+  params,
+}: Props): // parent: ResolvingMetadata
+Promise<Metadata> {
+  const slug = (await params).slug;
+
+  // fetch data
+  const product = await getProductBySlug(slug);
+
+  // optionally access and extend (rather than replace) parent metadata
+  // const previousImages = (await parent).openGraph?.images || [];
+
+  return {
+    title: product?.title ?? "Product not found",
+    description: product?.description,
+    openGraph: {
+      title: product?.title ?? "Product not found",
+      description: product?.description,
+      images: [`/products/${product?.images[1]}`],
+    },
+  };
 }
 
 export default async function ProductPage({ params }: Props) {
