@@ -1,15 +1,14 @@
 export const revalidate = 604800; // 7 days
 
+import { Metadata } from "next";
 import { notFound } from "next/navigation";
 
+import { AddToCart } from "./ui/AddToCart";
 import { titleFont } from "@/config/fonts";
 import { Slideshow } from "@/components/product/slideshow/Slideshow";
 import { StockLabel } from "@/components/product/stock-label/StockLabel";
 import { getProductBySlug } from "@/actions/products/get-product-by-slug";
-import { SizeSelector } from "@/components/product/size-selector/SizeSelector";
 import { MobileSlideshow } from "@/components/product/slideshow/MobileSlideshow";
-import { QuantitySelector } from "@/components/product/quantity-selector/QuantitySelector";
-import { Metadata } from "next";
 
 interface Props {
   params: Promise<{
@@ -77,17 +76,7 @@ export default async function ProductPage({ params }: Props) {
 
         <p className="text-lg mb-5 font-semibold">${product.price}</p>
 
-        {/* SIZE SELECTOR */}
-        <SizeSelector
-          selectedSize={product.sizes[0]}
-          availableSizes={product.sizes}
-        />
-
-        {/* QUANTITY SELECTOR */}
-        <QuantitySelector quantity={3} />
-
-        {/* ADD TO CART BUTTON */}
-        <button className="btn-primary my-5">Add to cart</button>
+        <AddToCart product={product} />
 
         {/* DESCRIPTION */}
         <h3 className="font-bold text-sm">Description</h3>
