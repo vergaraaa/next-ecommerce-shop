@@ -64,7 +64,7 @@ export const Sidebar = () => {
 
         {/* OPTIONS */}
         <Link
-          href="/"
+          href="/profile"
           className="flex items-center mt-10 p-2 hover:bg-gray-100 roudned transition-all duration-300"
         >
           <IoPersonOutline size={24} />
