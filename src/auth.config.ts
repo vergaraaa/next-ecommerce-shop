@@ -5,11 +5,33 @@ import type { NextAuthConfig } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 
 import prisma from "./lib/prisma";
+import { AdapterUser } from "next-auth/adapters";
 
 export const authConfig = {
   pages: {
     signIn: "/login",
     newUser: "/register",
+  },
+  callbacks: {
+    async jwt({ token, user }) {
+      if (user) {
+        token.data = user;
+      }
+
+      return token;
+    },
+    session({ session, token }) {
+      session.user = token.data as AdapterUser & {
+        id: string;
+        name: string;
+        email: string;
+        emailVerifified?: Date;
+        role: string;
+        image?: string;
+      };
+
+      return session;
+    },
   },
   providers: [
     Credentials({
