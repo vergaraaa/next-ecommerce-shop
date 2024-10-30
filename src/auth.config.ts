@@ -35,8 +35,6 @@ export const authConfig = {
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const { password: _, ...rest } = user;
 
-        console.log(rest);
-
         return rest;
       },
     }),
