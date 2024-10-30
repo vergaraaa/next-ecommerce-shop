@@ -1,9 +1,8 @@
 "use client";
 
-import { logout } from "@/actions/auth/logout";
-import { useUIStore } from "@/store/ui/ui-store";
 import clsx from "clsx";
 import Link from "next/link";
+
 import {
   IoCloseOutline,
   IoLogInOutline,
@@ -14,8 +13,13 @@ import {
   IoShareOutline,
   IoTicketOutline,
 } from "react-icons/io5";
+import { logout } from "@/actions/auth/logout";
+import { useUIStore } from "@/store/ui/ui-store";
+import { useSession } from "next-auth/react";
 
 export const Sidebar = () => {
+  const { data: session } = useSession();
+
   const isSideMenuOpen = useUIStore((state) => state.isSideMenuOpen);
   const closeSideMenu = useUIStore((state) => state.closeSideMenu);
 
@@ -66,6 +70,7 @@ export const Sidebar = () => {
         {/* OPTIONS */}
         <Link
           href="/profile"
+          onClick={closeSideMenu}
           className="flex items-center mt-10 p-2 hover:bg-gray-100 roudned transition-all duration-300"
         >
           <IoPersonOutline size={24} />
