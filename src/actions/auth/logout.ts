@@ -3,5 +3,11 @@
 import { signOut } from "@/auth.config";
 
 export const logout = async () => {
-  await signOut();
+  try {
+    await signOut();
+  } catch (error) {
+    console.log(error);
+
+    return "CredentialsSignOut";
+  }
 };

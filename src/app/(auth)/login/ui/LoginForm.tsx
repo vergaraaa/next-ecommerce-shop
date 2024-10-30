@@ -6,11 +6,8 @@ import { useActionState, useEffect } from "react";
 
 import { authenticate } from "@/actions/auth/login";
 import { IoArrowForward, IoInformationOutline } from "react-icons/io5";
-import { useRouter } from "next/navigation";
 
 export const LoginForm = () => {
-  const router = useRouter();
-
   const [message, formAction, isPending] = useActionState(
     authenticate,
     undefined
@@ -18,9 +15,9 @@ export const LoginForm = () => {
 
   useEffect(() => {
     if (message === "Success") {
-      router.replace("/");
+      window.location.replace("/");
     }
-  }, [message, router]);
+  }, [message]);
 
   return (
     <form action={formAction} className="flex flex-col">
