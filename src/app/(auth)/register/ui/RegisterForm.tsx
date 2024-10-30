@@ -2,9 +2,13 @@
 
 import clsx from "clsx";
 import Link from "next/link";
+import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 
-type RegisterFormData = {
+import { login } from "@/actions/auth/login";
+import { registerUser } from "@/actions/auth/register";
+
+export type RegisterFormData = {
   name: string;
   email: string;
   password: string;
@@ -17,11 +21,20 @@ export const RegisterForm = () => {
     formState: { errors },
   } = useForm<RegisterFormData>();
 
+  const [errorMessage, setErrorMessage] = useState("");
+
   const onSubmit: SubmitHandler<RegisterFormData> = async (
     data: RegisterFormData
   ) => {
-    console.log({ data });
-    // server action
+    setErrorMessage("");
+
+    const response = await registerUser(data);
+
+    if (!response.ok) return setErrorMessage(response.message);
+
+    await login(data.email.toLowerCase(), data.password);
+
+    window.location.replace("/profile");
   };
 
   return (
@@ -55,6 +68,10 @@ export const RegisterForm = () => {
         })}
         {...register("password", { required: true, minLength: 6 })}
       />
+
+      {errorMessage && (
+        <span className="text-red-500 pb-2">{errorMessage}</span>
+      )}
 
       <button className="btn-primary">Create account</button>
 
