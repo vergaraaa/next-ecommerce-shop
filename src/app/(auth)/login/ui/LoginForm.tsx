@@ -2,16 +2,25 @@
 
 import clsx from "clsx";
 import Link from "next/link";
-import { useActionState } from "react";
+import { useActionState, useEffect } from "react";
 
 import { authenticate } from "@/actions/auth/login";
 import { IoArrowForward, IoInformationOutline } from "react-icons/io5";
+import { useRouter } from "next/navigation";
 
 export const LoginForm = () => {
-  const [errorMessage, formAction, isPending] = useActionState(
+  const router = useRouter();
+
+  const [message, formAction, isPending] = useActionState(
     authenticate,
     undefined
   );
+
+  useEffect(() => {
+    if (message === "Success") {
+      router.replace("/");
+    }
+  }, [message, router]);
 
   return (
     <form action={formAction} className="flex flex-col">
@@ -30,10 +39,10 @@ export const LoginForm = () => {
       />
 
       <div className="" aria-live="polite" aria-atomic="true">
-        {errorMessage && (
+        {message && message !== "Success" && (
           <div className="mb-2 flex">
             <IoInformationOutline className="h-5 w-5 text-red-500" />
-            <p className="text-sm text-red-500">{errorMessage}</p>
+            <p className="text-sm text-red-500">{message}</p>
           </div>
         )}
       </div>
