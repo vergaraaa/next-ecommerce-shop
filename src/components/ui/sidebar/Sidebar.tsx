@@ -13,7 +13,6 @@ import {
   IoShareOutline,
   IoTicketOutline,
 } from "react-icons/io5";
-import { logout } from "@/actions/auth/logout";
 import { useUIStore } from "@/store/ui/ui-store";
 import { signOut, useSession } from "next-auth/react";
 
