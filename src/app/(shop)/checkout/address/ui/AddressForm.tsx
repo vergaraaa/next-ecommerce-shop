@@ -1,7 +1,9 @@
 "use client";
 
 import { Country } from "@/interfaces/country.interface";
+import { useAddressStore } from "@/store/address/address-store";
 import clsx from "clsx";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 
 interface Props {
@@ -21,15 +23,25 @@ type AddressFormData = {
 };
 
 export const AddressForm = ({ countries }: Props) => {
+  const address = useAddressStore((state) => state.address);
+  const setAddress = useAddressStore((state) => state.setAddress);
+
   const {
     handleSubmit,
     register,
     formState: { isValid },
+    reset,
   } = useForm<AddressFormData>({});
 
   const onSubmit = (formData: AddressFormData) => {
-    console.log({ formData });
+    setAddress(formData);
   };
+
+  useEffect(() => {
+    if (address.firstName) {
+      reset(address);
+    }
+  }, [address, reset]);
 
   return (
     <form
@@ -147,7 +159,7 @@ export const AddressForm = ({ countries }: Props) => {
             </div>
           </label>
 
-          <span>Remember addres?</span>
+          <span>Remember address?</span>
         </div>
 
         <button
