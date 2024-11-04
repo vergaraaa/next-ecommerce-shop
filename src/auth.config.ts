@@ -32,8 +32,8 @@ export const authConfig = {
 
       return session;
     },
-    authorized({ auth, request: { nextUrl } }) {
-      console.log(auth);
+    authorized() {
+      // console.log(auth);
 
       return true;
     },
