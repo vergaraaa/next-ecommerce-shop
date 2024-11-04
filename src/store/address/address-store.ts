@@ -1,20 +1,12 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
+import { Address } from "@/interfaces/address.interface";
 
 interface State {
-  address: {
-    firstName: string;
-    lastName: string;
-    address: string;
-    address2?: string;
-    zipCode: string;
-    city: string;
-    country: string;
-    phone: string;
-  };
+  address: Address;
 
   // methods
-  setAddress: (address: State["address"]) => void;
+  setAddress: (address: Address) => void;
 }
 
 export const useAddressStore = create<State>()(
