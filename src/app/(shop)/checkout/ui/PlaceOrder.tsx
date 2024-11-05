@@ -6,14 +6,31 @@ import { useShallow } from "zustand/shallow";
 import { useCartStore } from "@/store/cart/cart-store";
 import { currencyFormat } from "@/utils/currencyFormat";
 import { useAddressStore } from "@/store/address/address-store";
+import clsx from "clsx";
 
 export const PlaceOrder = () => {
+  const cart = useCartStore((state) => state.cart);
   const address = useAddressStore((state) => state.address);
   const { total, subtotal, tax, itemsInCart } = useCartStore(
     useShallow((state) => state.getSummaryInformation())
   );
 
   const [loaded, setLoaded] = useState(false);
+  const [isPlacingOrder, setIsPlacingOrder] = useState(false);
+
+  const onPlaceOrder = async () => {
+    setIsPlacingOrder(true);
+
+    const productsToOrder = cart.map((product) => ({
+      productId: product.id,
+      quantity: product.quantity,
+      size: product.size,
+    }));
+
+    console.log({ address, productsToOrder });
+
+    setIsPlacingOrder(false);
+  };
 
   useEffect(() => {
     setLoaded(true);
@@ -62,9 +79,16 @@ export const PlaceOrder = () => {
       </div>
 
       <div className="mt-5 mb-2 w-full">
+        {/* <p className="text-red-500">Error creating order</p> */}
+
         <button
           // href="/orders/123"
-          className="flex btn-primary justify-center"
+          onClick={onPlaceOrder}
+          disabled={isPlacingOrder}
+          className={clsx("flex justify-center", {
+            "btn-disabled": isPlacingOrder,
+            "btn-primary": !isPlacingOrder,
+          })}
         >
           Place order
         </button>
