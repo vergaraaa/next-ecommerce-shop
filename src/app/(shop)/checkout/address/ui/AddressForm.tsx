@@ -10,6 +10,7 @@ import { Country } from "@/interfaces/country.interface";
 import { useAddressStore } from "@/store/address/address-store";
 import { setUserAddress } from "@/actions/address/set-user-address.action";
 import { deleteUserAddress } from "@/actions/address/delete-user-address.action";
+import { useRouter } from "next/navigation";
 
 interface Props {
   countries: Country[];
@@ -29,6 +30,8 @@ type AddressFormData = {
 };
 
 export const AddressForm = ({ countries, userStoredAddress = {} }: Props) => {
+  const router = useRouter();
+
   const { data: session } = useSession({
     required: true,
   });
@@ -47,16 +50,18 @@ export const AddressForm = ({ countries, userStoredAddress = {} }: Props) => {
     },
   });
 
-  const onSubmit = (formData: AddressFormData) => {
+  const onSubmit = async (formData: AddressFormData) => {
     setAddress(formData);
 
     const { rememberAddress, ...restAddress } = formData;
 
     if (rememberAddress) {
-      setUserAddress(restAddress, session!.user.id);
+      await setUserAddress(restAddress, session!.user.id);
     } else {
-      deleteUserAddress(session!.user.id);
+      await deleteUserAddress(session!.user.id);
     }
+
+    router.push("/checkout");
   };
 
   useEffect(() => {
