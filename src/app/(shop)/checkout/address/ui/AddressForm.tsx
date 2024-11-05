@@ -1,23 +1,26 @@
 "use client";
 
-import { deleteUserAddress } from "@/actions/address/delete-user-address.action";
-import { setUserAddress } from "@/actions/address/set-user-address.action";
-import { Country } from "@/interfaces/country.interface";
-import { useAddressStore } from "@/store/address/address-store";
 import clsx from "clsx";
-import { useSession } from "next-auth/react";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
+import { useSession } from "next-auth/react";
+
+import { Address } from "@/interfaces/address.interface";
+import { Country } from "@/interfaces/country.interface";
+import { useAddressStore } from "@/store/address/address-store";
+import { setUserAddress } from "@/actions/address/set-user-address.action";
+import { deleteUserAddress } from "@/actions/address/delete-user-address.action";
 
 interface Props {
   countries: Country[];
+  userStoredAddress?: Partial<Address>;
 }
 
 type AddressFormData = {
   firstName: string;
   lastName: string;
   address: string;
-  address2: string;
+  address2?: string;
   zipCode: string;
   city: string;
   country: string;
@@ -25,7 +28,7 @@ type AddressFormData = {
   rememberAddress: boolean;
 };
 
-export const AddressForm = ({ countries }: Props) => {
+export const AddressForm = ({ countries, userStoredAddress = {} }: Props) => {
   const { data: session } = useSession({
     required: true,
   });
@@ -37,7 +40,12 @@ export const AddressForm = ({ countries }: Props) => {
     register,
     formState: { isValid },
     reset,
-  } = useForm<AddressFormData>({});
+  } = useForm<AddressFormData>({
+    defaultValues: {
+      ...userStoredAddress,
+      rememberAddress: false,
+    },
+  });
 
   const onSubmit = (formData: AddressFormData) => {
     setAddress(formData);
