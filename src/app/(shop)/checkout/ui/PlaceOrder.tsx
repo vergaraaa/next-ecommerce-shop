@@ -1,12 +1,13 @@
 "use client";
 
+import clsx from "clsx";
 import { useEffect, useState } from "react";
 import { useShallow } from "zustand/shallow";
 
 import { useCartStore } from "@/store/cart/cart-store";
 import { currencyFormat } from "@/utils/currencyFormat";
 import { useAddressStore } from "@/store/address/address-store";
-import clsx from "clsx";
+import { placeOrder } from "@/actions/orders/place-order.action";
 
 export const PlaceOrder = () => {
   const cart = useCartStore((state) => state.cart);
@@ -27,7 +28,9 @@ export const PlaceOrder = () => {
       size: product.size,
     }));
 
-    console.log({ address, productsToOrder });
+    const resp = await placeOrder(productsToOrder, address);
+
+    console.log(resp);
 
     setIsPlacingOrder(false);
   };
