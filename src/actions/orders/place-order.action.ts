@@ -129,8 +129,8 @@ export const placeOrder = async (
       order: prismaTx.order,
       prismaTx: prismaTx,
     };
-  } catch (error) {
-    console.log(error);
-    return { ok: false, message: error };
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } catch (error: any) {
+    return { ok: false, message: error.message };
   }
 };

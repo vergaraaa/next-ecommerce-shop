@@ -8,9 +8,13 @@ import { useCartStore } from "@/store/cart/cart-store";
 import { currencyFormat } from "@/utils/currencyFormat";
 import { useAddressStore } from "@/store/address/address-store";
 import { placeOrder } from "@/actions/orders/place-order.action";
+import { useRouter } from "next/navigation";
 
 export const PlaceOrder = () => {
+  const router = useRouter();
+
   const cart = useCartStore((state) => state.cart);
+  const clearCart = useCartStore((state) => state.clearCart);
   const address = useAddressStore((state) => state.address);
   const { total, subtotal, tax, itemsInCart } = useCartStore(
     useShallow((state) => state.getSummaryInformation())
@@ -18,9 +22,11 @@ export const PlaceOrder = () => {
 
   const [loaded, setLoaded] = useState(false);
   const [isPlacingOrder, setIsPlacingOrder] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
   const onPlaceOrder = async () => {
     setIsPlacingOrder(true);
+    setErrorMessage("");
 
     const productsToOrder = cart.map((product) => ({
       productId: product.id,
@@ -30,9 +36,16 @@ export const PlaceOrder = () => {
 
     const resp = await placeOrder(productsToOrder, address);
 
-    console.log(resp);
-
     setIsPlacingOrder(false);
+
+    if (!resp.ok) {
+      setErrorMessage(resp.message);
+      return;
+    }
+
+    clearCart();
+
+    router.replace(`/orders/${resp.order?.id}`);
   };
 
   useEffect(() => {
@@ -82,7 +95,7 @@ export const PlaceOrder = () => {
       </div>
 
       <div className="mt-5 mb-2 w-full">
-        {/* <p className="text-red-500">Error creating order</p> */}
+        <p className="text-red-500">{errorMessage}</p>
 
         <button
           // href="/orders/123"
