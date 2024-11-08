@@ -1,5 +1,6 @@
 "use client";
 
+import { changeUserRole } from "@/actions/users/change-user-role.action";
 import { User } from "@/interfaces/user.interface";
 
 interface Props {
@@ -46,7 +47,9 @@ export const UsersTable = ({ users }: Props) => {
             <td className="flex items-center text-sm  text-gray-900 font-light px-6 py-4 whitespace-nowrap">
               <select
                 value={user.role}
-                onChange={(e) => console.log(e)}
+                onChange={async (e) =>
+                  await changeUserRole(user.id, e.target.value)
+                }
                 className="text-sm text-gray-900 w-full p-2"
               >
                 <option value="admin">Admin</option>
