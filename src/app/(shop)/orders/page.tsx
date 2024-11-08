@@ -33,19 +33,19 @@ export default async function OrdersPage() {
                 scope="col"
                 className="text-sm font-medium text-gray-900 px-6 py-4 text-left"
               >
-                Nombre completo
+                Name
               </th>
               <th
                 scope="col"
                 className="text-sm font-medium text-gray-900 px-6 py-4 text-left"
               >
-                Estado
+                Status
               </th>
               <th
                 scope="col"
                 className="text-sm font-medium text-gray-900 px-6 py-4 text-left"
               >
-                Opciones
+                Options
               </th>
             </tr>
           </thead>
