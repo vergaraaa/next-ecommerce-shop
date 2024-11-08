@@ -4,8 +4,9 @@ import { redirect } from "next/navigation";
 import { IoCardOutline } from "react-icons/io5";
 
 import { Title } from "@/components/ui/title/Title";
-import { getOrderById } from "@/actions/orders/get-order-by-id.action";
 import { currencyFormat } from "@/utils/currencyFormat";
+import { PayPalButton } from "@/components/paypal/PayPalButton";
+import { getOrderById } from "@/actions/orders/get-order-by-id.action";
 
 interface Props {
   params: Promise<{
@@ -118,20 +119,9 @@ export default async function OrderPage({ params }: Props) {
               </span>
             </div>
 
-            <div
-              className={clsx(
-                "flex items-center rounded-lg py-2 px-3.5 text-xs font-bold text-white mt-5",
-                {
-                  "bg-red-500": !order.isPaid,
-                  "bg-green-700": order.isPaid,
-                }
-              )}
-            >
-              <IoCardOutline size={30} />
-
-              <span className="mx-2">
-                {order.isPaid ? "Payed" : "Not payed"}
-              </span>
+            {/* PAYPAL BUTTON */}
+            <div className="mt-5">
+              <PayPalButton />
             </div>
           </div>
         </div>
