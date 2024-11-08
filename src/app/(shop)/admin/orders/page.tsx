@@ -1,15 +1,14 @@
 export const revalidate = 0;
 
-// https://tailwindcomponents.com/component/hoverable-table
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { IoCardOutline } from "react-icons/io5";
 
 import { Title } from "@/components/ui/title/Title";
-import { getOrdersBySessionUser } from "@/actions/orders/get-orders-by-user.action";
+import { getOrders } from "@/actions/orders/get-orders.action";
 
 export default async function OrdersPage() {
-  const { ok, orders = [] } = await getOrdersBySessionUser();
+  const { ok, orders = [] } = await getOrders();
 
   if (!ok) {
     redirect("/login");
@@ -17,7 +16,7 @@ export default async function OrdersPage() {
 
   return (
     <>
-      <Title title="Orders" />
+      <Title title="All orders" />
 
       <div className="mb-10">
         <table className="min-w-full">

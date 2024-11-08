@@ -95,6 +95,7 @@ export const Sidebar = () => {
               onClick={async () => {
                 signOut({ redirect: false });
                 closeSideMenu();
+                localStorage.removeItem("address-store");
               }}
               className="w-full flex items-center mt-10 p-2 hover:bg-gray-100 roudned transition-all"
             >
@@ -130,7 +131,8 @@ export const Sidebar = () => {
             </Link>
 
             <Link
-              href="/"
+              href="/admin/orders"
+              onClick={closeSideMenu}
               className="flex items-center mt-10 p-2 hover:bg-gray-100 roudned transition-all"
             >
               <IoTicketOutline size={24} />

@@ -8,16 +8,16 @@ export const Footer = () => {
         <span className={`${titleFont.className} antialiased font-bold `}>
           Teslo{" "}
         </span>
-        <span>| shop </span>
+        <span>| Shop </span>
         <span>© {new Date().getFullYear()}</span>
       </Link>
 
       <Link href="/" className="mx-3">
-        Privacidad & Legal
+        Privacy
       </Link>
 
       <Link href="/" className="mx-3">
-        Ubicaciones
+        Locations
       </Link>
     </div>
   );
