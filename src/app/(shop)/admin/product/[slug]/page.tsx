@@ -2,6 +2,7 @@ import { getProductBySlug } from "@/actions/products/get-product-by-slug";
 import { Title } from "@/components/ui/title/Title";
 import { redirect } from "next/navigation";
 import { ProductForm } from "./ui/ProductForm";
+import { getCategories } from "@/actions/categories/get-categories.action";
 
 interface Props {
   params: Promise<{
@@ -12,7 +13,10 @@ interface Props {
 export default async function ProductPage({ params }: Props) {
   const { slug } = await params;
 
-  const product = await getProductBySlug(slug);
+  const [product, categories] = await Promise.all([
+    getProductBySlug(slug),
+    getCategories(),
+  ]);
 
   if (!product) redirect("/admin/products");
 
@@ -22,7 +26,7 @@ export default async function ProductPage({ params }: Props) {
     <>
       <Title title={title} />
 
-      <ProductForm product={product} />
+      <ProductForm product={product} categories={categories} />
     </>
   );
 }
