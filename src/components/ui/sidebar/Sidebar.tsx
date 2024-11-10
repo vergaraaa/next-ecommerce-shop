@@ -122,7 +122,7 @@ export const Sidebar = () => {
             <div className="w-full h-px bg-gray-200 my-10"></div>
 
             <Link
-              href="/"
+              href="/admin/products"
               className="flex items-center mt-10 p-2 hover:bg-gray-100 roudned transition-all"
             >
               <IoShareOutline size={24} />
@@ -142,6 +142,7 @@ export const Sidebar = () => {
 
             <Link
               href="/admin/users"
+              onClick={closeSideMenu}
               className="flex items-center mt-10 p-2 hover:bg-gray-100 roudned transition-all"
             >
               <IoPeopleOutline size={24} />
