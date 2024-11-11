@@ -123,6 +123,7 @@ export const Sidebar = () => {
 
             <Link
               href="/admin/products"
+              onClick={closeSideMenu}
               className="flex items-center mt-10 p-2 hover:bg-gray-100 roudned transition-all"
             >
               <IoShareOutline size={24} />
