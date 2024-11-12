@@ -5,6 +5,7 @@ import { Category } from "@/interfaces/categories.interface";
 import { Product, ProductImage } from "@/interfaces/product.interface";
 import Image from "next/image";
 import clsx from "clsx";
+import { createUpdateProduct } from "@/actions/products/create-update-product.action";
 
 interface Props {
   product: Product & { ProductImage?: ProductImage[] };
@@ -18,7 +19,7 @@ interface ProductFormData {
   slug: string;
   description: string;
   price: number;
-  insStock: number;
+  inStock: number;
   categoryId: string;
   sizes: string[];
   tags: string;
@@ -39,7 +40,7 @@ export const ProductForm = ({ product, categories }: Props) => {
       ...product,
       tags: product.tags.join(", "),
       sizes: product.sizes ?? [],
-
+      inStock: product.inStock,
       // todo: images
     },
   });
@@ -58,8 +59,25 @@ export const ProductForm = ({ product, categories }: Props) => {
     setValue("sizes", Array.from(sizes));
   };
 
-  const onSubmit = async (formData: ProductFormData) => {
-    console.log({ formData });
+  const onSubmit = async (data: ProductFormData) => {
+    const formData = new FormData();
+
+    const { ...productToSave } = data;
+
+    formData.append("id", product.id ?? "");
+    formData.append("title", productToSave.title);
+    formData.append("slug", productToSave.slug);
+    formData.append("description", productToSave.description);
+    formData.append("price", productToSave.price.toString());
+    formData.append("inStock", productToSave.inStock?.toString());
+    formData.append("sizes", productToSave.sizes.toString());
+    formData.append("tags", productToSave.tags);
+    formData.append("categoryId", productToSave.categoryId);
+    formData.append("gender", productToSave.gender);
+
+    const { ok } = await createUpdateProduct(formData);
+
+    console.log({ ok });
   };
 
   return (
