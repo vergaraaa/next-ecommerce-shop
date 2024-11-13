@@ -8,7 +8,7 @@ import clsx from "clsx";
 import { createUpdateProduct } from "@/actions/products/create-update-product.action";
 
 interface Props {
-  product: Product & { ProductImage?: ProductImage[] };
+  product: (Partial<Product> & { ProductImage?: ProductImage[] }) | null;
   categories: Category[];
 }
 
@@ -38,9 +38,9 @@ export const ProductForm = ({ product, categories }: Props) => {
   } = useForm<ProductFormData>({
     defaultValues: {
       ...product,
-      tags: product.tags.join(", "),
-      sizes: product.sizes ?? [],
-      inStock: product.inStock,
+      tags: product?.tags?.join(", "),
+      sizes: product?.sizes ?? [],
+      inStock: product?.inStock,
       // todo: images
     },
   });
@@ -64,7 +64,9 @@ export const ProductForm = ({ product, categories }: Props) => {
 
     const { ...productToSave } = data;
 
-    formData.append("id", product.id ?? "");
+    if (product?.id) {
+      formData.append("id", product?.id ?? "");
+    }
     formData.append("title", productToSave.title);
     formData.append("slug", productToSave.slug);
     formData.append("description", productToSave.description);
@@ -167,6 +169,15 @@ export const ProductForm = ({ product, categories }: Props) => {
 
       {/* SIZES AND PHOTOS SELECTOR */}
       <div className="w-full">
+        <div className="flex flex-col mb-2">
+          <span>In stock</span>
+          <input
+            type="number"
+            className="p-2 border rounded-md bg-gray-200"
+            {...register("inStock", { required: true, min: 0 })}
+          />
+        </div>
+
         {/* As checkboxes */}
         <div className="flex flex-col">
           <span>Sizes</span>
@@ -199,10 +210,10 @@ export const ProductForm = ({ product, categories }: Props) => {
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-            {product.ProductImage?.map((image) => (
+            {product?.ProductImage?.map((image) => (
               <div key={image.id}>
                 <Image
-                  alt={product.title ?? ""}
+                  alt={product?.title ?? ""}
                   src={`/products/${image.url}`}
                   width={300}
                   height={300}
