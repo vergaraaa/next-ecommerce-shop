@@ -31,7 +31,7 @@ export const ProductForm = ({ product, categories }: Props) => {
   const {
     handleSubmit,
     register,
-    formState: { isValid },
+    // formState: { isValid },
     getValues,
     setValue,
     watch,

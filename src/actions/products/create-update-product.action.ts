@@ -40,7 +40,7 @@ export const createUpdateProduct = async (formData: FormData) => {
 
   const { id, ...rest } = product;
 
-  const prismaTx = await prisma.$transaction(async (tx) => {
+  await prisma.$transaction(async (tx) => {
     let product: Product;
     const tagsArray = rest.tags
       .split(",")
