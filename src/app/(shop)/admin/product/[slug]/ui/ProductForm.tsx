@@ -6,6 +6,7 @@ import { Product, ProductImage } from "@/interfaces/product.interface";
 import Image from "next/image";
 import clsx from "clsx";
 import { createUpdateProduct } from "@/actions/products/create-update-product.action";
+import { useRouter } from "next/navigation";
 
 interface Props {
   product: (Partial<Product> & { ProductImage?: ProductImage[] }) | null;
@@ -45,6 +46,8 @@ export const ProductForm = ({ product, categories }: Props) => {
     },
   });
 
+  const router = useRouter();
+
   watch("sizes");
 
   const onSizeChanged = (size: string) => {
@@ -77,9 +80,14 @@ export const ProductForm = ({ product, categories }: Props) => {
     formData.append("categoryId", productToSave.categoryId);
     formData.append("gender", productToSave.gender);
 
-    const { ok } = await createUpdateProduct(formData);
+    const { ok, product: updatedProduct } = await createUpdateProduct(formData);
 
-    console.log({ ok });
+    if (!ok) {
+      alert("Error updating product");
+      return;
+    }
+
+    router.replace(`/admin/product/${updatedProduct?.slug}`);
   };
 
   return (

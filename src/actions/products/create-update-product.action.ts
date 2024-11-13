@@ -5,6 +5,7 @@ import prisma from "@/lib/prisma";
 import { Gender, Product } from "@prisma/client";
 
 import { Size } from "@/interfaces/product.interface";
+import { revalidatePath } from "next/cache";
 
 const productSchema = z.object({
   id: z.string().uuid().optional().nullable(),
@@ -40,37 +41,51 @@ export const createUpdateProduct = async (formData: FormData) => {
 
   const { id, ...rest } = product;
 
-  await prisma.$transaction(async (tx) => {
-    let product: Product;
-    const tagsArray = rest.tags
-      .split(",")
-      .map((tag) => tag.trim().toLowerCase());
+  try {
+    const prismaTx = await prisma.$transaction(async (tx) => {
+      let product: Product;
+      const tagsArray = rest.tags
+        .split(",")
+        .map((tag) => tag.trim().toLowerCase());
 
-    // update
-    if (id) {
-      product = await tx.product.update({
-        where: { id: id },
-        data: {
-          ...rest,
-          sizes: { set: rest.sizes as Size[] },
-          tags: { set: tagsArray },
-        },
-      });
-    } else {
-      // create
-      product = await tx.product.create({
-        data: {
-          ...rest,
-          sizes: { set: rest.sizes as Size[] },
-          tags: { set: tagsArray },
-        },
-      });
-    }
+      // update
+      if (id) {
+        product = await tx.product.update({
+          where: { id: id },
+          data: {
+            ...rest,
+            sizes: { set: rest.sizes as Size[] },
+            tags: { set: tagsArray },
+          },
+        });
+      } else {
+        // create
+        product = await tx.product.create({
+          data: {
+            ...rest,
+            sizes: { set: rest.sizes as Size[] },
+            tags: { set: tagsArray },
+          },
+        });
+      }
 
-    return { product };
-  });
+      return { product };
+    });
 
-  return {
-    ok: true,
-  };
+    revalidatePath("/admin/products");
+    revalidatePath(`/admin/product/${product.slug}`);
+    revalidatePath(`/products/${product.slug}`);
+
+    return {
+      ok: true,
+      product: prismaTx.product,
+    };
+  } catch (error) {
+    console.log(error);
+
+    return {
+      ok: false,
+      message: "Error creating/updating product",
+    };
+  }
 };
