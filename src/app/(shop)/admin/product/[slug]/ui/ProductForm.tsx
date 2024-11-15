@@ -1,15 +1,19 @@
 "use client";
 
-import { useForm } from "react-hook-form";
-import { Category } from "@/interfaces/categories.interface";
-import { Product, ProductImage } from "@/interfaces/product.interface";
-import Image from "next/image";
 import clsx from "clsx";
-import { createUpdateProduct } from "@/actions/products/create-update-product.action";
+import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
 
+import { Category } from "@/interfaces/categories.interface";
+import {
+  Product,
+  ProductImage as ProductWithImage,
+} from "@/interfaces/product.interface";
+import { createUpdateProduct } from "@/actions/products/create-update-product.action";
+import { ProductImage } from "@/components/product/product-image/ProductImage";
+
 interface Props {
-  product: (Partial<Product> & { ProductImage?: ProductImage[] }) | null;
+  product: (Partial<Product> & { ProductImage?: ProductWithImage[] }) | null;
   categories: Category[];
 }
 
@@ -227,9 +231,9 @@ export const ProductForm = ({ product, categories }: Props) => {
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
             {product?.ProductImage?.map((image) => (
               <div key={image.id}>
-                <Image
+                <ProductImage
                   alt={product?.title ?? ""}
-                  src={`/products/${image.url}`}
+                  src={image.url}
                   width={300}
                   height={300}
                   className="rounded-t shadow-md"
