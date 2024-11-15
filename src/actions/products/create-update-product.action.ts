@@ -69,6 +69,10 @@ export const createUpdateProduct = async (formData: FormData) => {
         });
       }
 
+      // process and load files
+      if (formData.getAll("images")) {
+      }
+
       return { product };
     });
 
