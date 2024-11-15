@@ -11,6 +11,7 @@ import {
 } from "@/interfaces/product.interface";
 import { createUpdateProduct } from "@/actions/products/create-update-product.action";
 import { ProductImage } from "@/components/product/product-image/ProductImage";
+import { deleteProductImage } from "@/actions/products/delete-product-image.action";
 
 interface Props {
   product: (Partial<Product> & { ProductImage?: ProductWithImage[] }) | null;
@@ -241,9 +242,9 @@ export const ProductForm = ({ product, categories }: Props) => {
 
                 <button
                   type="button"
-                  onClick={() => {
-                    console.log(image.id, image.url);
-                  }}
+                  onClick={async () =>
+                    await deleteProductImage(image.id, image.url)
+                  }
                   className="btn-danger w-full rounded-b-xl"
                 >
                   Delete
