@@ -9,9 +9,9 @@ import { ProductImage } from "@/components/product/product-image/ProductImage";
 import { getPaginatedProductsWithImages } from "@/actions/products/product-pagination";
 
 interface Props {
-  searchParams: {
+  searchParams: Promise<{
     page?: string;
-  };
+  }>;
 }
 
 export default async function ProductsPage({ searchParams }: Props) {

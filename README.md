@@ -7,3 +7,4 @@
 5. Run Prisma migrations `npx prisma migrate dev`
 6. Run seed `npm run seed`
 7. Run project `npm run dev`
+8. Clean localStorage of browser
